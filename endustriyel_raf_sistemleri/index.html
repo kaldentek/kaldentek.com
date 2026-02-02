@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endüstriyel Raf Sistemleri Periyodik Kontrolü - Kaldentek Muayene ve Kontrol Hizmetleri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* --- MOBİL DİL SEÇENEĞİ STİLLERİ --- */
+
+/* Masaüstünde gizle (Çünkü zaten yukarıdaki şeritte var) */
+.mobile-lang-selector {
+    display: none;
+}
+
+/* Sadece Mobil Görünümde (768px altı) Göster */
+@media (max-width: 768px) {
+    .mobile-lang-selector {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0; /* Menüden ayıran ince çizgi */
+        width: 100%;
+    }
+
+    .mobile-lang-selector a {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark); /* Koyu renk yazı */
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+
+    /* Seçili Dil (TR) Kırmızı Olsun */
+    .mobile-lang-selector a.active-lang {
+        color: var(--primary-color);
+        background: rgba(220, 38, 38, 0.1); /* Hafif kırmızı arka plan */
+        border-radius: 5px;
+    }
+
+    .mobile-lang-selector .sep {
+        color: #cbd5e1;
+        font-weight: 300;
+    }
+}
+
+/* Dil Seçeneği Stilleri */
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* TR ve EN arasındaki boşluk */
+    font-weight: 600;
+}
+
+.language-selector a {
+    color: rgba(255, 255, 255, 0.7); /* Pasif dil hafif soluk */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    padding: 2px 5px; /* Tıklama alanını biraz genişletir */
+}
+
+.language-selector a:hover {
+    color: #ffffff; /* Üzerine gelince tam beyaz */
+}
+
+.language-selector a.active {
+    color: #ffffff; /* Aktif dil tam beyaz */
+    border-bottom: 2px solid var(--primary-color); /* Altına kırmızı çizgi */
+}
+
+.language-selector .separator {
+    color: rgba(255, 255, 255, 0.3); /* Çizgi çok silik olsun */
+    font-size: 12px;
+}
+
+        /* Mevcut CSS yapınız korundu, liste stilleri eklendi */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #dc2626;
+            --secondary-color: #1e293b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header Styles */
+        header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+        .header-top { background: var(--secondary-color); color: var(--white); padding: 8px 0; font-size: 14px; }
+        .header-top .container { display: flex; justify-content: space-between; align-items: center; }
+        .contact-info { display: flex; gap: 20px; align-items: center; }
+        .header-main { padding: 15px 0; }
+        .header-main .container { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo-section { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-section img { height: 60px; width: auto; }
+        
+        nav { display: flex; gap: 30px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        nav a:hover { color: var(--primary-color); }
+        
+        .cta-button {
+            background: var(--primary-color); color: var(--white); padding: 10px 25px; border-radius: 25px;
+            text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .cta-button:hover { background: #b91c1c; transform: translateY(-2px); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Hero Section */
+        .service-hero {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(30, 41, 59, 0.95));
+            color: var(--white); padding: 80px 0; text-align: center;
+        }
+        .service-hero h1 { font-size: 48px; margin-bottom: 20px; }
+        .service-hero p { font-size: 20px; max-width: 800px; margin: 0 auto; opacity: 0.95; }
+        .breadcrumb { margin-top: 30px; }
+        .breadcrumb a { color: var(--white); text-decoration: none; opacity: 0.8; }
+        .breadcrumb span { margin: 0 10px; opacity: 0.6; }
+
+        /* Content Section & Grid Fix */
+        .service-content { padding: 80px 0; background: var(--white); }
+        /* --- SAYFA DÜZENİ (GRID) --- */
+.content-grid { 
+    display: grid; 
+    /* SOL Sütun (İçerik): Esnek (Geniş), SAĞ Sütun (Menü): Sabit 300px */
+    grid-template-columns: 1fr 300px; 
+    gap: 40px; 
+    align-items: start; /* Yapışkan özelliğin çalışması için şart */
+}
+
+/* --- SOL YAPIŞKAN MENÜ STİLLERİ --- */
+.service-sidebar {
+    position: sticky; 
+    top: 130px; /* Header'ın biraz altında durması için */
+    background: var(--white);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow-lg);
+    z-index: 90;
+}
+
+.service-sidebar h3 {
+    font-size: 20px;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+    font-weight: 700;
+}
+
+.service-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-sidebar li {
+    margin-bottom: 10px;
+}
+
+.service-sidebar a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+    border: 1px solid transparent;
+}
+
+.service-sidebar a:hover {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateX(5px);
+}
+/* Aktif Sayfa İçin Kırmızı Stil */
+.service-sidebar a.current-page {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+}
+/* --- MOBİL GÖRÜNÜM --- */
+@media (max-width: 992px) {
+    .content-grid {
+        grid-template-columns: 1fr; /* Mobilde tek sütuna düşür */
+    }
+    .service-sidebar {
+        display: none; /* Mobilde yan menüyü gizle */
+    }
+}  
+        
+        /* Main Content Styling */
+        .main-content h2 {
+            font-size: 36px; color: var(--text-dark); margin-bottom: 30px; position: relative; padding-bottom: 15px;
+        }
+        .main-content h2::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 4px; background: var(--primary-color); border-radius: 2px;
+        }
+        .main-content h3 {
+            font-size: 22px; color: var(--secondary-color); margin-top: 30px; margin-bottom: 15px; font-weight: 700;
+        }
+        .main-content p { font-size: 16px; line-height: 1.8; color: var(--text-light); margin-bottom: 20px; }
+
+        /* YENİ EKLENEN LİSTE STİLİ */
+        .detail-list { list-style: none; margin-bottom: 25px; }
+        .detail-list li {
+            position: relative; padding-left: 25px; margin-bottom: 12px; color: var(--text-light);
+        }
+        .detail-list li::before {
+            content: '\f00c'; /* FontAwesome Check Icon */
+            font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; left: 0; top: 2px; color: var(--primary-color); font-size: 14px;
+        }
+        .detail-list li strong { color: var(--text-dark); font-weight: 600; }
+
+        /* Sidebar Styles */
+        .sidebar { position: sticky; top: 100px; }
+        .sidebar-card {
+            background: var(--bg-light); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e2e8f0;
+        }
+        .sidebar-card h3 { font-size: 20px; margin-bottom: 20px; color: var(--text-dark); }
+        .quick-links { list-style: none; }
+        .quick-links li { margin-bottom: 12px; }
+        .quick-links a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-light); transition: 0.3s; }
+        .quick-links a:hover { color: var(--primary-color); transform: translateX(5px); }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white); padding: 60px 0; text-align: center;
+        }
+        .btn-white {
+            background: var(--white); color: var(--primary-color); padding: 12px 30px; border-radius: 30px;
+            text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-white:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-outline {
+            background: transparent; border: 2px solid var(--white); color: var(--white); padding: 12px 30px;
+            border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-outline:hover { background: var(--white); color: var(--primary-color); }
+
+        .sidebar-image-container img {
+		display: flex;
+		flex-direction: column;
+		gap: 1500px;
+		height: 100%;
+		justify-content: center;
+}
+		.sidebar-image-container img{
+            width: 100%;
+            height: auto%;
+	    max height: 400px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            object-fit: cover;
+		transition: transform 0.3s ease;
+            /* Görselin çok uzun olmasını engellemek için opsiyonel max-height */
+            max-height: 600px; 
+        }
+	.sidebar-image-container img:hover{
+		transform: scale(1.05);
+}
+
+        /* Footer */
+        footer { background: var(--secondary-color); color: var(--white); padding: 50px 0 20px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 30px; }
+        .footer-section ul { list-style: none; }
+        .footer-section a { color: #cbd5e1; text-decoration: none; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #475569; color: #94a3b8; }
+
+        /* Mobile */
+        .mobile-menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .header-top { display: none; }
+            nav { display: none; width: 100%; position: absolute; top: 100%; left: 0; background: var(--white); flex-direction: column; padding: 20px; box-shadow: var(--shadow); }
+            nav.active { display: flex; }
+            .mobile-menu-toggle { display: block; }
+            .content-grid { grid-template-columns: 1fr; }
+            .sidebar { position: static; margin-top: 40px; }
+        }
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Z-Index'i 0 yaptık ki arka planda kaybolmasın */
+    z-index: 0; 
+    
+    /* BURAYI KONTROL EDİN: Dosya yolu doğru mu? */
+    background-image: url('endustriyel.webp'); 
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    
+    /* Test için biraz daha belirgin yaptık (Normalde 0.05 iyidir) */
+    opacity: 0.1; 
+    
+    pointer-events: none;
+}
+
+/* İçeriklerin resmin üstünde kalması için */
+.container, header, footer {
+    position: relative;
+    z-index: 1;
+}   
+/* --- MÜŞTERİ GİRİŞİ BUTONU STİLİ --- */
+.client-login-btn {
+    background-color: var(--primary-color); /* Kırmızı */
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary-color);
+}
+
+.client-login-btn:hover {
+    background-color: #ffffff; /* Üzerine gelince beyaz */
+    color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+    </style>
+</head>
+<body>
+
+
+       <header>
+        <div class="header-top">
+            <div class="container">
+               <div class="login-section">
+            <a href="login.html" class="client-login-btn">
+                <i class="fas fa-user-lock"></i> Portal
+            </a>
+        </div>
+
+<div class="language-selector">
+            <a href="/" class="active">TR</a>
+            <span class="separator">|</span>
+            <a href="login.html">EN</a>
+        </div>
+
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <a href="/" class="logo-section">
+                    <img src="../../Logo.png" alt="Kaldentek Logo">
+                </a>
+                <nav id="navbar">
+                    <a href="/">Anasayfa</a>
+                    <a href="../../hizmetlerimiz/">Hizmetlerimiz</a>
+                    <a href="../../hakkimizda/">Hakkımızda</a>
+		    <a href="../../dokumanlar/">Dökümanlar</a>
+                    <a href="../../iletisim/">İletişim</a>
+    </div>
+                </nav>
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="service-hero">
+        <div class="container">
+            <h1>Endüstriyel Raf Sistemleri Periyodik Kontrolü</h1>
+                <p> Ayarlanabilir Palet Rafları, İçine Girilebilir Raflar, Konsol Kollu Raflar, Hareketli Raflar, Mobil Raflar, Döner Raflar, Asma Kat Raflar </p>       
+        </div>
+    </section>
+
+    <section class="service-content">
+        <div class="container">
+            <div class="content-grid">
+                
+                <div class="main-content">
+             
+                    <p>
+                        Endüstriyel raf sistemleri; depo ve üretim alanlarında yüklerin güvenli şekilde depolanmasını sağlayan kritik yapısal ekipmanlardır. Bu sistemlerin periyodik kontrolleri, İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği, ilgili standartlar ve gereklilikleri doğrultusunda yürütülmektedir.
+                    </p>
+<div class="sidebar-image-container">
+                    <img src="endraf.webp" alt="Endüstriye Raf Sistemleri">
+                   
+                </div>
+                    <h3>1. Periyodik Kontrol Kriterleri</h3>
+                    <p>Endüstriyel raf sistemlerinin periyodik kontrollerinde aşağıdaki kriterler esas alınır:</p>
+                    <ul class="detail-list">
+                        <li>
+                            <strong>Yapısal Bütünlük ve Taşıma Kapasitesi:</strong> Raf kolonları, kirişler, bağlantı elemanları ve ankrajların deformasyon, çatlak veya korozyon açısından kontrolü yapılır. Mevcut yükleme kapasitesi ile karşılaştırılır.
+                        </li>
+                        <li>
+                            <strong>Düşey ve Yatay Denge:</strong> Raf sisteminin dikey ve yatay stabilitesi, ankraj ve bağlantı elemanlarının durumu değerlendirilir.
+                        </li>
+                        <li>
+                            <strong>Bağlantı Elemanları ve Ek Parçalar:</strong> Cıvata, somun, plaka ve diğer bağlantı elemanlarının eksiksiz ve sağlam olması kontrol edilir.
+                        </li>
+                        <li>
+                            <strong>Zemin ve Ankraj Kontrolü:</strong> Raf sistemi üzerine uygulanan yükler ve zemin taşıma kapasitesi uyumu değerlendirilir.
+                        </li>
+                        <li>
+                            <strong>İşaretleme ve Güvenlik Etiketleri:</strong> Rafların yükleme kapasiteleri, uyarı levhaları ve kullanım talimatlarının uygunluğu incelenir.
+                        </li>
+ <li>
+                            <strong>Özel Risk Değerlendirmesi:</strong> İnsan ve forklift erişim alanları, geçiş yolları ve yükleme/boşaltma operasyonları açısından riskler değerlendirilir.
+                        </li>
+                    </ul>
+
+                    <h3>2. Periyodik Kontrol Metotları</h3>
+                    <p>Periyodik kontrol faaliyetleri, tarafsız, bağımsız ve izlenebilir şekilde aşağıdaki yöntemlerle yürütülür:</p>
+                    <ul class="detail-list">
+                        <li>
+                            <strong>Görsel Muayene:</strong> Kolon, kiriş, bağlantı elemanları ve ankrajlar gözle muayene edilerek deformasyon, çatlak ve korozyon kontrol edilir.
+                        </li>
+                        <li>
+                            <strong>Ölçüm ve Geometri Kontrolleri:</strong> Dikey ve yatay doğruluk, kolon aralıkları ve kiriş hizaları ölçüm cihazları ile kontrol edilir.
+                        </li>
+                                              <li>
+                            <strong>Mühendislik Değerlendirmesi:</strong> Elde edilen tüm veriler, mühendislik hesapları ve standart kriterler doğrultusunda analiz edilerek uygunluk kararı oluşturulur.
+                        </li>
+                    </ul>
+
+                    <h3>3. Raporlama ve Uygunluk Kararı</h3>
+                    <p>
+                        Periyodik kontrol sonucunda hazırlanan rapor; uygulanan kontrol metotlarını, ölçüm sonuçlarını, mevzuat ve standart referanslarını ve uygunluk durumunu açık şekilde içerir. Uygunluk kararı, yalnızca objektif teknik veriler ve ölçülebilir kriterler esas alınarak verilir.
+                    </p>
+                    <p>
+                        <strong>Sonuç:</strong> Endüstriyel raf sistemlerinin periyodik kontrolleri, bağımsızlık, tarafsızlık ve teknik yeterlilik ilkeleri doğrultusunda gerçekleştirilerek, depolama güvenliği ve işyeri ergonomisi sağlanır, olası kazaların önlenmesi hedeflenir.
+                    </p>
+                </div>
+
+                           <aside class="service-sidebar">
+        <h3>Hizmetlerimiz</h3>
+        <ul>
+            <li>
+                   <a href="../../basincli_kaplar_ve_silindirik_kazanlar/">
+                    Basınçlı Kaplar ve Silindirik Kazanlar <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../kaldirma_ve_iletme_makineleri/">
+                    Kaldırma ve İletme Makineleri <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../mekanik_yangin_tesisati/">
+                    Mekanik Yangın Tesisatı <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../otomatik_sondurme_sistemleri/">
+                    Otomatik Söndürme Sistemleri<i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../portatif_yangin_sondurme_cihazlari/">
+                    Yangın Söndürme Cihazları <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../kacis_yolu_basinclandirma_sistemleri/">
+                    Kaçış Yolu Basınçlandırma Sistemleri<i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../duman_tahliye_sistemleri/" class="current-page">
+                    Duman Tahliye Sistemleri <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../havalandirma_ve_iklimlendirme_tesisati/">
+                    Havalandırma ve İklimlendirme Tesisatı <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../tezgahlar/">
+                    Tezgahlar <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../endustriyel_raf_sistemleri/">
+                    Endüstriyel Raf Sistemleri <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../endustriyel_kapilar/">
+                    Endüstriyel Kapılar <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../is_makineleri/">
+                    İş Makineleri <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a href="../../statik_analiz/">
+                    Statik Analiz <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </aside>
+            </div>
+        </div>
+  </section>
+
+
+
+
+
+  
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kaldentek Muayene ve Kontrol Hizmetleri</h3>
+                   
+
+                </div>
+                             
+                <div class="footer-section">
+                    <h3>İletişim</h3>
+                          <p style="color:#cbd5e1;"><i class="fas fa-phone"></i> 0532 546 27 18</p>
+                    <p style="color:#cbd5e1; margin:10px 0;"><i class="fas fa-envelope"></i> info@kaldentek.com</p>
+                    <p style="color:#cbd5e1;"><i class="fas fa-map-marker-alt"></i> Çınarlı Mah. Ozan Abay Cad. No:8 Z17 Konak İzmir</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                   <p>&copy; 2026 Kaldentek Muayene ve Kontrol Hizmetleri | Tüm Hakları Saklıdır</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const menuToggle = document.getElementById('menuToggle');
+            const body = document.body;
+            
+            // Overlay oluştur
+            const menuOverlay = document.createElement('div');
+            menuOverlay.className = 'menu-overlay';
+            document.body.appendChild(menuOverlay);
+
+            // Menü Aç/Kapat Fonksiyonu
+            function toggleMenu() {
+                navbar.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                body.classList.toggle('menu-open');
+                
+                // İkon değiştirme
+                const icon = menuToggle.querySelector('i');
+                if (navbar.classList.contains('active')) {
+                    icon.classList.replace('fa-bars', 'fa-times');
+                } else {
+                    icon.classList.replace('fa-times', 'fa-bars');
+                }
+            }
+
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            menuOverlay.addEventListener('click', toggleMenu);
+
+            // Linke tıklanınca menüyü kapat
+            const navLinks = navbar.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navbar.classList.contains('active')) toggleMenu();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

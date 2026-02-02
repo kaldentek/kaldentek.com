@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Kaldentek Muayene ve Kontrol Hizmetleri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* --- MOBİL DİL SEÇENEĞİ STİLLERİ --- */
+
+/* Masaüstünde gizle (Çünkü zaten yukarıdaki şeritte var) */
+.mobile-lang-selector {
+    display: none;
+}
+
+/* Sadece Mobil Görünümde (768px altı) Göster */
+@media (max-width: 768px) {
+    .mobile-lang-selector {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0; /* Menüden ayıran ince çizgi */
+        width: 100%;
+    }
+
+    .mobile-lang-selector a {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark); /* Koyu renk yazı */
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+
+    /* Seçili Dil (TR) Kırmızı Olsun */
+    .mobile-lang-selector a.active-lang {
+        color: var(--primary-color);
+        background: rgba(220, 38, 38, 0.1); /* Hafif kırmızı arka plan */
+        border-radius: 5px;
+    }
+
+    .mobile-lang-selector .sep {
+        color: #cbd5e1;
+        font-weight: 300;
+    }
+}
+
+/* Dil Seçeneği Stilleri */
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* TR ve EN arasındaki boşluk */
+    font-weight: 600;
+}
+
+.language-selector a {
+    color: rgba(255, 255, 255, 0.7); /* Pasif dil hafif soluk */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    padding: 2px 5px; /* Tıklama alanını biraz genişletir */
+}
+
+.language-selector a:hover {
+    color: #ffffff; /* Üzerine gelince tam beyaz */
+}
+
+.language-selector a.active {
+    color: #ffffff; /* Aktif dil tam beyaz */
+    border-bottom: 2px solid var(--primary-color); /* Altına kırmızı çizgi */
+}
+
+.language-selector .separator {
+    color: rgba(255, 255, 255, 0.3); /* Çizgi çok silik olsun */
+    font-size: 12px;
+}
+
+        /* --- GENEL AYARLAR --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #dc2626;
+            --secondary-color: #1e293b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* --- KONTEYNER YAPISI (DÜZELTİLDİ) --- */
+        /* Header ve Footer için geniş alan (1200px) */
+        .container { 
+            max-width: 1200px; 
+            width: 100%;
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        /* Sadece makale/okuma alanı için daraltılmış özel alan (900px) */
+        .article-wrapper {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto; /* Ortala */
+        }
+
+        /* --- HEADER --- */
+        header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 10000; }
+        .header-top { background: var(--secondary-color); color: var(--white); padding: 8px 0; font-size: 14px; }
+        .header-top .container { display: flex; justify-content: space-between; align-items: center; }
+        .contact-info { display: flex; gap: 20px; align-items: center; }
+        .header-main { padding: 15px 0; }
+        .header-main .container { display: flex; justify-content: space-between; align-items: center; position: relative; }
+        
+        .logo-section { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-section img { height: 60px; width: auto; }
+        
+        nav { display: flex; gap: 30px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        nav a:hover { color: var(--primary-color); }
+        
+        .cta-button {
+            background: var(--primary-color); color: var(--white); padding: 10px 25px; border-radius: 25px;
+            text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .cta-button:hover { background: #b91c1c; transform: translateY(-2px); }
+
+        /* --- HERO SECTION --- */
+        .service-hero {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(30, 41, 59, 0.95));
+            color: var(--white); padding: 80px 0; text-align: center;
+        }
+        .service-hero h1 { font-size: 48px; margin-bottom: 20px; }
+        .service-hero p { font-size: 20px; max-width: 800px; margin: 0 auto; opacity: 0.95; }
+        .breadcrumb { margin-top: 30px; }
+        .breadcrumb a { color: var(--white); text-decoration: none; opacity: 0.8; }
+        .breadcrumb span { margin: 0 10px; opacity: 0.6; }
+
+        /* --- İÇERİK ALANI --- */
+        .service-content { padding: 60px 0; background: var(--white); }
+        
+        .main-content h2 {
+            font-size: 32px; color: var(--text-dark); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; text-align: center;
+        }
+        .main-content h3 {
+            font-size: 24px; color: var(--secondary-color); margin-top: 40px; margin-bottom: 20px; font-weight: 700;
+        }
+        .main-content p { 
+            font-size: 20
+px; 
+            line-height: 1.8; 
+            color: var(--text-dark); 
+            margin-bottom: 25px; 
+            text-align: justify; 
+        }
+
+        /* --- YÖNETMELİK KUTUSU (ÖZEL STİL) --- */
+        .regulation-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        /* --- LİSTE STİLLERİ --- */
+        .detail-list { list-style: none; margin-bottom: 25px; }
+        .detail-list li {
+            position: relative; padding-left: 25px; margin-bottom: 15px; color: var(--text-dark); font-size: 16px;
+        }
+        .detail-list li::before {
+            content: '\f00c'; 
+            font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; left: 0; top: 4px; color: var(--primary-color); font-size: 16px;
+        }
+        .detail-list li strong { color: #000; font-weight: 600; }
+
+        /* --- GÖRSEL STİLLERİ --- */
+        .content-image {
+            width: 100%;          
+            height: auto;         
+            max-height: 500px;    
+            object-fit: cover;    
+            border-radius: 12px;  
+            box-shadow: var(--shadow-lg); 
+            margin: 40px 0;       
+            display: block;
+        }
+        .content-image:hover { transform: scale(1.01); transition: transform 0.3s ease; }
+
+        /* --- CTA --- */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white); padding: 60px 0; text-align: center;
+        }
+        .btn-white {
+            background: var(--white); color: var(--primary-color); padding: 12px 30px; border-radius: 30px;
+            text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-white:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-outline {
+            background: transparent; border: 2px solid var(--white); color: var(--white); padding: 12px 30px;
+            border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-outline:hover { background: var(--white); color: var(--primary-color); }
+
+        /* --- FOOTER (DÜZELTİLDİ) --- */
+        footer { background: var(--secondary-color); color: var(--white); padding: 60px 0 30px; }
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 50px; 
+            margin-bottom: 30px; 
+        }
+        .footer-section h3 { margin-bottom: 20px; font-size: 18px; color: var(--white); }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 10px; }
+        .footer-section a { color: #cbd5e1; text-decoration: none; transition: 0.3s; }
+        .footer-section a:hover { color: var(--white); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #475569; color: #94a3b8; }
+        .social-links a { color: white; margin-right: 15px; font-size: 20px; }
+
+        /* --- MOBİL --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+    background-image: url('hakkimizda.webp'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    opacity: 0.1; 
+    pointer-events: none;
+}
+
+/* İçeriklerin resmin üstünde kalması için */
+.container, footer {
+    position: relative;
+    z-index: 1;
+}   
+
+/* --- MÜŞTERİ GİRİŞİ BUTONU STİLİ --- */
+.client-login-btn {
+    background-color: var(--primary-color); /* Kırmızı */
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary-color);
+}
+
+.client-login-btn:hover {
+    background-color: #ffffff; /* Üzerine gelince beyaz */
+    color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* --- MOBİL MENU TOGGLE TUŞU --- */
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-dark);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 8px;
+    transition: all 0.3s ease;
+    margin-left: auto;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.mobile-menu-toggle:hover {
+    color: var(--primary-color);
+}
+
+/* Mobilde menü tuşunu göster */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+    
+    /* Masaüstü nav'ı tamamen reset et */
+    nav {
+        gap: 0 !important;
+        align-items: flex-start !important;
+    }
+    
+    nav {
+        display: none !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 120px !important;
+        width: 100% !important;
+        flex-direction: column !important;
+        background: #2e2e2e !important;
+        padding: 20px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        max-height: calc(100vh - 120px) !important;
+        overflow-y: auto !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: translateY(-20px) !important;
+        transition: all 0.3s ease !important;
+        pointer-events: none !important;
+    }
+    
+    nav.active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+    }
+    
+    nav a {
+        padding: 15px 10px !important;
+        border-bottom: 1px solid #444 !important;
+        font-size: 16px !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        display: block !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    nav a:hover {
+        background: rgba(220, 38, 38, 0.2) !important;
+        color: #dc2626 !important;
+    }
+    
+    /* Menu overlay */
+    .menu-overlay {
+        display: none !important;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998 !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .menu-overlay.active {
+        display: block !important;
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    body.menu-open {
+        overflow: hidden;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <header>
+     <div class="header-top">
+            <div class="container">
+               <div class="login-section">
+            <a href="../login.html" class="client-login-btn">
+                <i class="fas fa-user-lock"></i> Portal
+            </a>
+        </div>
+<div class="language-selector">
+            <a href="/" class="active">TR</a>
+            <span class="separator">|</span>
+            <a href="../../login.html">EN</a>
+        </div>
+
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <a href="/" class="logo-section">
+                    <img src="Logo.png" alt="Kaldentek Logo">
+                </a>
+                <nav id="navbar">
+                    <a href="/">Anasayfa</a>
+                    <a href="../../hizmetlerimiz/">Hizmetlerimiz</a>
+                    <a href="../../hakkimizda/">Hakkımızda</a>
+                    <a href="../../dokumanlar/">Dökümanlar</a>
+                    <a href="../../iletisim/">İletişim</a>
+                </nav>
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    
+
+    <section class="service-content">
+        <div class="container">
+            <div class="article-wrapper">
+                
+                <div class="main-content">
+                    
+                    <h2>İş Ekipmanları Periyodik Kontrolü</h2>
+                     <p>25.04.2013 tarih ve 28628 sayılı Resmi Gazete’de yayımlanan 
+                        <strong style="color: #2e2e2e;">İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği</strong> 
+                        gereğince, iş yerinizdeki ekipmanların yılda en az bir kez periyodik kontrolden geçmesi zorunludur. Kaldentek olarak, üretim süreçlerinizin aksamaması ve çalışan güvenliğinin maksimum seviyede tutulması için teknik ölçüm ve raporlama hizmetlerini titizlikle sunuyoruz.</p>
+
+
+      <div class="main-content">     
+
+<h2> Periyodik Kontrol Nedir?</h2>
+</div>
+<p> Periyodik kontrol, iş ekipmanlarının; tasarım kriterlerine, kullanım amacına, maruz kaldığı yük ve çevresel şartlara uygun şekilde güvenli çalışıp çalışmadığının, belirlenmiş zaman aralıklarında yetkili teknik personel tarafından yapılan muayene, ölçüm ve teknik değerlendirme faaliyetlerinin bütünüdür. </p>
+<p>Bu kontroller; yalnızca gözle muayeneyi değil,</p>
+			<ul class="detail-list">
+			<li> Ölçüm </li>
+			<li> Fonksiyon testi </li>
+			<li> Yük ve emniyet değerlendirmesi </li>
+			<li> Standart ve mevzuat karşılaştırmasını kapsayan mühendislik temelli bir doğrulama sürecidir.</li>
+			 </ul>
+<div class="main-content">
+<h2>İş Ekipmanı Nedir?</h2>
+</div>
+<p> İş ekipmanı; işin yapılması sırasında kullanılan veya kullanılmak üzere tasarlanmış olan makine, alet, tesisat ve sistemlerin tamamını ifade eder. Bu kapsamda iş ekipmanları: </p>
+                      
+<ul class="detail-list">
+			<li> Basınçlı Kaplar ve Silindirik Kazanlar: Otoklavlar, Basınçlı Hava Tankları, Kompresörler, Hidrofor ve Genleşme Tankları, Boyler ve Akümülasyon Tankları, Buhar ve Kızgın Su Kazanları, Buhar Jeneratörleri, Isıtma Kazanları, Kızgın Yağ Kazanları</li>
+			<li> Kaldırma ve İletme Makineleri: Vinçler, Caraskal ve Çektirmeler, Kanca Altı Ekipmanlar, Platformlar, İnşaat ve Yük Asansörleri, Endüstriyel Araçlar, İskeleler, Konveyörler, Hidrolik Rampalar </li>
+			<li> Tesisatlar: Mekanik Yangın Tesisatı, Otomatik Söndürme Sistemleri, Yangın Söndürme Cihazları, Kaçış Yolu Basınçlandırma ve Duman Tahliye Sistemleri, Havalandırma ve İklimlendirme Tesisatı </li>
+			<li> Tezgahlar: Presler, Torna ve Freze Tezgahları, Testereler, Ağaç İşleme Tezgahları </li>
+			<li> Endüstriyel Raf Sistemleri ve Kapılar </li>
+			<li> İş Makineleri: Sondaj Makineleri, Kazıcı ve Yükleyiciler, Damperli Kamyonlar, Zemin Düzeltme Sıkıştırma Makineleri, Beton Pompaları </li>
+gibi çalışanların sağlığını ve güvenliğini doğrudan etkileyen tüm teknik sistemleri kapsar.
+İş ekipmanları, kullanım şekli ve oluşturabileceği risk seviyesi dikkate alınarak periyodik kontrol kapsamına alınır.</p>
+</ul>
+<div class="main-content">
+<h2>Periyodik Kontrol Neden Gereklidir?</h2>
+</div>
+ <p> İş ekipmanları zamanla metal yorulması, aşınma, deformasyon, ayar ve emniyet kayıpları gibi nedenlerle tasarlandığı güvenli çalışma şartlarının dışına çıkabilir. Periyodik kontroller, bu risklerin kaza oluşmadan önce tespit edilmesini sağlar.</p>
+<p> Periyodik kontroller 6331 Sayılı İş Sağlığı ve Güvenliği Kanunu, İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği kapsamında işverenin yükümlülüğüdür. Kontrollerin yapılmaması veya yetkisiz kişilerce yapılması durumunda idari ve hukuki yaptırımlar söz konusudur. </p>
+<p> Periyodik kontrol, ekipmanın yalnızca “çalışıyor” olmasını değil, emniyet katsayılarının korunup korunmadığını, limit değerler içinde çalışıp çalışmadığını, standartlara uygunluğunu mühendislik bakış açısıyla doğrular. </p>
+<p> Plansız arızalar ve kazalar, üretim duruşlarına, ekipman hasarına ve yüksek onarım maliyetlerine neden olur. Periyodik kontroller, önleyici bakım ve risk yönetimi açısından kritik rol oynar. </p>
+                 
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Güvenliğiniz kontrolümüz altında.</h2>
+            <p style="margin-bottom:30px;">Çalışanlarınızın güvenliği, ekipmanlarınızın verimliliği için uzman kadromuzla yanınızdayız.</p>
+            <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kaldentek Muayene ve Kontrol Hizmetleri</h3>
+                                   </div>
+            
+                <div class="footer-section">
+                    <h3>İletişim</h3>
+                    <p style="color:#cbd5e1;"><i class="fas fa-phone"></i> 0532 546 27 18</p>
+                    <p style="color:#cbd5e1;"><i class="fas fa-envelope"></i> info@kaldentek.com</p>
+                    <p style="color:#cbd5e1;"><i class="fas fa-map-marker-alt"></i> Çınarlı Mah. Ozan Abay Cad. No:8 Z17 Konak İzmir</p>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kaldentek Muayene ve Kontrol Hizmetleri | Tüm Hakları Saklıdır</p>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const menuToggle = document.getElementById('menuToggle');
+            const body = document.body;
+            
+            console.log('Navbar:', navbar);
+            console.log('MenuToggle:', menuToggle);
+            
+            if (!navbar || !menuToggle) {
+                console.error('Navbar veya MenuToggle bulunamadı!');
+                return;
+            }
+            
+            // Overlay oluştur
+            const menuOverlay = document.createElement('div');
+            menuOverlay.className = 'menu-overlay';
+            document.body.appendChild(menuOverlay);
+
+            // Menü Aç/Kapat Fonksiyonu
+            function toggleMenu() {
+                console.log('Menu toggle edildi');
+                navbar.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                body.classList.toggle('menu-open');
+                
+                // İkon değiştirme
+                const icon = menuToggle.querySelector('i');
+                if (navbar.classList.contains('active')) {
+                    icon.classList.replace('fa-bars', 'fa-times');
+                } else {
+                    icon.classList.replace('fa-times', 'fa-bars');
+                }
+            }
+
+            menuToggle.addEventListener('click', (e) => {
+                console.log('Menu tuşu tıklandı');
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            menuOverlay.addEventListener('click', toggleMenu);
+
+            // Linke tıklanınca menüyü kapat
+            const navLinks = navbar.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navbar.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    body.classList.remove('menu-open');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.replace('fa-times', 'fa-bars');
+                });
+            });
+        });
+    </script>
+
+    </body>
+</html>

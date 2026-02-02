@@ -1,0 +1,622 @@
+	<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Kaldentek Muayene ve Kontrol Hizmetleri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* --- MOBİL DİL SEÇENEĞİ STİLLERİ --- */
+
+/* Masaüstünde gizle (Çünkü zaten yukarıdaki şeritte var) */
+.mobile-lang-selector {
+    display: none;
+}
+
+/* Sadece Mobil Görünümde (768px altı) Göster */
+@media (max-width: 768px) {
+    .mobile-lang-selector {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0; /* Menüden ayıran ince çizgi */
+        width: 100%;
+    }
+
+    .mobile-lang-selector a {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark); /* Koyu renk yazı */
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+
+    /* Seçili Dil (TR) Kırmızı Olsun */
+    .mobile-lang-selector a.active-lang {
+        color: var(--primary-color);
+        background: rgba(220, 38, 38, 0.1); /* Hafif kırmızı arka plan */
+        border-radius: 5px;
+    }
+
+    .mobile-lang-selector .sep {
+        color: #cbd5e1;
+        font-weight: 300;
+    }
+}
+
+/* Dil Seçeneği Stilleri */
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* TR ve EN arasındaki boşluk */
+    font-weight: 600;
+}
+
+.language-selector a {
+    color: rgba(255, 255, 255, 0.7); /* Pasif dil hafif soluk */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    padding: 2px 5px; /* Tıklama alanını biraz genişletir */
+}
+
+.language-selector a:hover {
+    color: #ffffff; /* Üzerine gelince tam beyaz */
+}
+
+.language-selector a.active {
+    color: #ffffff; /* Aktif dil tam beyaz */
+    border-bottom: 2px solid var(--primary-color); /* Altına kırmızı çizgi */
+}
+
+.language-selector .separator {
+    color: rgba(255, 255, 255, 0.3); /* Çizgi çok silik olsun */
+    font-size: 12px;
+}
+
+        /* --- GENEL AYARLAR --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #dc2626;
+            --secondary-color: #1e293b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        .container { 
+            max-width: 1200px; 
+            width: 100%;
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        /* --- HEADER --- */
+        header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+        .header-top { background: var(--secondary-color); color: var(--white); padding: 8px 0; font-size: 14px; }
+        .header-top .container { display: flex; justify-content: space-between; align-items: center; }
+        .contact-info { display: flex; gap: 20px; align-items: center; }
+        .header-main { padding: 15px 0; }
+        .header-main .container { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo-section { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-section img { height: 60px; width: auto; }
+        
+        nav { display: flex; gap: 30px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        nav a:hover { color: var(--primary-color); }
+        
+        /* --- HERO SECTION --- */
+        .service-hero {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(30, 41, 59, 0.95));
+            color: var(--white); padding: 80px 0; text-align: center;
+        }
+        .service-hero h1 { font-size: 48px; margin-bottom: 20px; }
+        .service-hero p { font-size: 20px; max-width: 800px; margin: 0 auto; opacity: 0.95; }
+
+        /* --- İLETİŞİM SAYFASI ÖZEL CSS --- */
+        .service-content { padding: 60px 0; background: var(--white); }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* Bilgi kısmı dar, form geniş */
+            gap: 50px;
+            margin-top: 20px;
+        }
+
+        /* Sol Taraf: İletişim Bilgileri */
+        .contact-info-box {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        .info-item {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .info-item i {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-top: 5px;
+        }
+        .info-item h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+        .info-item p {
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Sağ Taraf: Form */
+        .contact-form {
+            background: var(--white);
+            padding: 10px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        .submit-btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 15px 35px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Harita */
+        .map-container {
+            margin-top: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        /* WhatsApp Butonu */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 32px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            background-color: #128c7e;
+            transform: scale(1.1);
+            color: #fff;
+        }
+
+        /* --- FOOTER --- */
+        footer { background: var(--secondary-color); color: var(--white); padding: 60px 0 30px; }
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 50px; 
+            margin-bottom: 30px; 
+        }
+        .footer-section h3 { margin-bottom: 20px; font-size: 18px; color: var(--white); }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 10px; }
+        .footer-section a { color: #cbd5e1; text-decoration: none; transition: 0.3s; }
+        .footer-section a:hover { color: var(--white); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #475569; color: #94a3b8; }
+
+        /* Mobil */
+        .mobile-menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .header-top { display: none; }
+            nav { display: none; width: 100%; position: absolute; top: 100%; left: 0; background: var(--white); flex-direction: column; padding: 20px; box-shadow: var(--shadow); }
+            nav.active { display: flex; }
+            .mobile-menu-toggle { display: block; }
+            .contact-grid { grid-template-columns: 1fr; gap: 30px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+        }
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Z-Index'i 0 yaptık ki arka planda kaybolmasın */
+    z-index: 0; 
+    
+    /* BURAYI KONTROL EDİN: Dosya yolu doğru mu? */
+    background-image: url('iletisim.webp'); 
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    
+    /* Test için biraz daha belirgin yaptık (Normalde 0.05 iyidir) */
+    opacity: 0.1; 
+    
+    pointer-events: none;
+}
+
+/* İçeriklerin resmin üstünde kalması için */
+.container, header, footer {
+    position: relative;
+    z-index: 1;
+}   
+
+/* --- MÜŞTERİ GİRİŞİ BUTONU STİLİ --- */
+.client-login-btn {
+    background-color: var(--primary-color); /* Kırmızı */
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary-color);
+}
+
+.client-login-btn:hover {
+    background-color: #ffffff; /* Üzerine gelince beyaz */
+    color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="container">
+               <div class="login-section">
+            <a href="login.html" class="client-login-btn">
+                <i class="fas fa-user-lock"></i> Portal
+            </a>
+        </div>
+
+<div class="language-selector">
+            <a href="/" class="active">TR</a>
+            <span class="separator">|</span>
+            <a href="login.html">EN</a>
+        </div>
+
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <a href="/" class="logo-section">
+                    <img src="../../Logo.png" alt="Kaldentek Logo">
+                </a>
+                <nav id="navbar">
+                    <a href="/">Anasayfa</a>
+                    <a href="../../hizmetlerimiz/">Hizmetlerimiz</a>
+                    <a href="../../hakkimizda/">Hakkımızda</a>
+		    <a href="../../dokumanlar/">Dökümanlar</a>
+                    <a href="../../iletisim/">İletişim</a>
+    </div>
+                </nav>
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="service-hero">
+        <div class="container">
+            <h1>İletişim</h1>
+            <p>Sorularınız, teklif talepleriniz veya randevu oluşturmak için bizimle iletişime geçin.</p>
+        </div>
+    </div>
+
+    <section class="service-content">
+        <div class="container">
+            
+            <div class="contact-grid">
+                <div class="contact-info-wrapper">
+                    <div class="contact-info-box">
+                        <div class="info-item">
+                            <i class="fas fa-location-dot"></i>
+                            <div>
+                                <h4>Adres</h4>
+                                <p style="margin-bottom: 10px;">Çınarlı Mah. Ozan Abay Cad. No:8 Z17 Konak İzmir</p>
+                                
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Telefon</h4>
+                                <p><a href="tel:05325462718" style="color: inherit; text-decoration: none;">0532 546 27 18</a></p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>E-posta</h4>
+                                  <p>info@kaldentek.com</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Çalışma Saatleri</h4>
+                                <p>Pazartesi - Cuma: 08:00 - 17:00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d200000!2d27.1!3d38.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14bbd862a762cacd%3A0x628cbba1a59ce8fe!2zxLB6bWly!5e0!3m2!1str!2str!4v1234567890" 
+                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <div class="main-content">
+                        <h2 style="text-align: left; margin-bottom: 20px;">Bize Ulaşın</h2>
+                        <p style="margin-bottom: 30px;">Aşağıdaki formu doldurarak bize ulaşabilirsiniz. En kısa sürede size dönüş yapacağız.</p>
+                    </div>
+
+                    <form id="contactForm">
+                        <input type="hidden" name="access_key" value="a1be21ef-3269-49ae-a220-3876b66fee28">
+                        <input type="hidden" name="subject" value="Yeni İletişim Formu Mesajı - Kaldentek">
+                        <input type="hidden" name="from_name" value="Kaldentek Web Sitesi">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Adınız Soyadınız</label>
+                                <input type="text" name="name" placeholder="Adınız Soyadınız" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Firma Adı / Ünvanı</label>
+                                <input type="text" name="firma" placeholder="Firma Adı / Unvanı" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                             <div class="form-group">
+                                <label>Telefon Numaranız</label>
+                                <input type="tel" name="telefon" placeholder="05XX XXX XX XX" required>
+                            </div>
+                            <div class="form-group">
+                                <label>E-posta Adresiniz</label>
+                                <input type="email" name="email" placeholder="ornek@email.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hizmet Türü</label>
+                            <select name="hizmet">
+                                <option value="">Seçiniz...</option>
+                                <option value="basinclikaplar">Basınçlı Kaplar ve Silindirik Kazanlar</option>
+                                <option value="kaldirma">Kaldırma ve İletme Makineleri</option>
+                                <option value="tesisat">Tesisatlar</option>
+                                <option value="tezgah">Tezgahlar</option>
+                                <option value="raf">Endüstriyel Raf Sistemleri ve Kapılar</option>
+                                <option value="ismakinesi">İş Makinesi</option>
+                                <option value="statik">Statik Analiz</option>
+                                <option value="diger">Genel Periyodik Muayene</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mesajınız</label>
+                            <textarea name="message" rows="5" placeholder="Talebinizi veya sorunuzu buraya yazınız..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            Gönder <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="https://wa.me/905325462718?text=Merhaba,%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kaldentek Muayene ve Kontrol Hizmetleri</h3>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>İletişim</h3>
+                       <p style="color:#cbd5e1;"><i class="fas fa-phone"></i> 0532 546 27 18</p>
+                    <p style="color:#cbd5e1; margin:10px 0;"><i class="fas fa-envelope"></i> info@kaldentek.com</p>
+                    <p style="color:#cbd5e1;"><i class="fas fa-map-marker-alt"></i> Çınarlı Mah. Ozan Abay Cad. No:8 Z17 Konak İzmir</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kaldentek Muayene ve Kontrol Hizmetleri | Tüm Hakları Saklıdır</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        function toggleMobileMenu() {
+            const navbar = document.getElementById('navbar');
+            navbar.classList.toggle('active');
+        }
+
+        // Bildirim göstermek için yardımcı fonksiyon
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 20px 30px;
+                background-color: ${type === 'success' ? '#10b981' : '#ef4444'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(notification);
+            
+            // 3 saniye sonra kaldır
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Form gönderimi - AJAX ile, yönlendirme olmadan
+        const form = document.getElementById('contactForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Default form submission'ı engelle
+                
+                const button = form.querySelector('.submit-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+                button.disabled = true;
+                
+                // Form verilerini topla
+                const formData = new FormData(form);
+                
+                // AJAX ile web3forms'a gönder
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Başarılı - bildirimi göster
+                        showNotification('✓ Mesajınız başarıyla gönderildi! Ana sayfaya yönlendiriliyorsunuz...', 'success');
+                        
+                        // Formu sıfırla
+                        form.reset();
+                        button.innerHTML = 'Gönder <i class="fas fa-paper-plane"></i>';
+                        button.disabled = false;
+                        
+                        // 2 saniye sonra anasayfaya yönlendir
+                        setTimeout(function() {
+                            window.location.href = '/';
+                        }, 2000);
+                    } else {
+                        // Hata
+                        showNotification('Mesaj gönderilemedi. Lütfen tekrar deneyin.', 'error');
+                        button.innerHTML = 'Gönder <i class="fas fa-paper-plane"></i>';
+                        button.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showNotification('Mesaj gönderilemedi. Lütfen tekrar deneyin.', 'error');
+                    button.innerHTML = 'Gönder <i class="fas fa-paper-plane"></i>';
+                    button.disabled = false;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

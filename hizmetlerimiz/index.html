@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hizmetlerimiz - Kaldentek Muayene ve Kontrol Hizmetleri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* --- MOBİL DİL SEÇENEĞİ STİLLERİ --- */
+
+/* Masaüstünde gizle (Çünkü zaten yukarıdaki şeritte var) */
+.mobile-lang-selector {
+    display: none;
+}
+
+/* Sadece Mobil Görünümde (768px altı) Göster */
+@media (max-width: 768px) {
+    .mobile-lang-selector {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0; /* Menüden ayıran ince çizgi */
+        width: 100%;
+    }
+
+    .mobile-lang-selector a {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark); /* Koyu renk yazı */
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+
+    /* Seçili Dil (TR) Kırmızı Olsun */
+    .mobile-lang-selector a.active-lang {
+        color: var(--primary-color);
+        background: rgba(220, 38, 38, 0.1); /* Hafif kırmızı arka plan */
+        border-radius: 5px;
+    }
+
+    .mobile-lang-selector .sep {
+        color: #cbd5e1;
+        font-weight: 300;
+    }
+}
+
+/* Dil Seçeneği Stilleri */
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* TR ve EN arasındaki boşluk */
+    font-weight: 600;
+}
+
+.language-selector a {
+    color: rgba(255, 255, 255, 0.7); /* Pasif dil hafif soluk */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    padding: 2px 5px; /* Tıklama alanını biraz genişletir */
+}
+
+.language-selector a:hover {
+    color: #ffffff; /* Üzerine gelince tam beyaz */
+}
+
+.language-selector a.active {
+    color: #ffffff; /* Aktif dil tam beyaz */
+    border-bottom: 2px solid var(--primary-color); /* Altına kırmızı çizgi */
+}
+
+.language-selector .separator {
+    color: rgba(255, 255, 255, 0.3); /* Çizgi çok silik olsun */
+    font-size: 12px;
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #dc2626;
+            --secondary-color: #1e293b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-top {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .header-top .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-2px);
+        }
+
+        .header-main {
+            padding: 15px 0;
+        }
+
+        .header-main .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-section img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-button:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(30, 41, 59, 0.9)), url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZGMyNjI2O3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzFlMjkzYjtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSI2MDAiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-text h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 15px 35px;
+            border: 2px solid var(--white);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInRight 0.8s ease;
+        }
+
+        .hero-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hero-card i {
+            font-size: 60px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .hero-card h3 {
+            color: var(--text-dark);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .hero-card p {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-top: 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .service-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image i {
+            font-size: 60px;
+            color: var(--white);
+            z-index: 1;
+        }
+
+        .service-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .service-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .service-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+            transition: gap 0.3s ease;
+        }
+
+        .service-card:hover .service-link {
+            gap: 10px;
+        }
+
+        /* Appointment Form Section */
+        .appointment {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 5px;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .whatsapp-button {
+            background: #25D366;
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .whatsapp-button:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: var(--bg-light);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-color), #ef4444);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--white);
+        }
+
+        .feature-item h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .feature-item p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-section p,
+        .footer-section ul {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #475569;
+            color: #94a3b8;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-top {
+                display: none;
+            }
+
+            .header-main .container {
+                flex-wrap: wrap;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h2 {
+                font-size: 32px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Z-Index'i 0 yaptık ki arka planda kaybolmasın */
+    z-index: 0; 
+    
+    /* BURAYI KONTROL EDİN: Dosya yolu doğru mu? */
+    background-image: url('hizmetlerimiz.webp'); 
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    
+    /* Test için biraz daha belirgin yaptık (Normalde 0.05 iyidir) */
+    opacity: 0.1; 
+    
+    pointer-events: none;
+}
+
+/* İçeriklerin resmin üstünde kalması için */
+.container, header, footer {
+    position: relative;
+    z-index: 1;
+}   
+
+/* --- MÜŞTERİ GİRİŞİ BUTONU STİLİ --- */
+.client-login-btn {
+    background-color: var(--primary-color); /* Kırmızı */
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary-color);
+}
+
+.client-login-btn:hover {
+    background-color: #ffffff; /* Üzerine gelince beyaz */
+    color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+    </style>
+</head>
+<body>
+
+    <header>
+         <div class="header-top">
+            <div class="container">
+               <div class="login-section">
+            <a href="../../login.html" class="client-login-btn">
+                <i class="fas fa-user-lock"></i> Portal
+            </a>
+        </div>
+<div class="language-selector">
+            <a href="/" class="active">TR</a>
+            <span class="separator">|</span>
+            <a href="../../login.html">EN</a>
+        </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <a href="/" class="logo-section">
+                    <img src="../../Logo.png" alt="Kaldentek Logo">
+                </a>
+                <nav id="navbar">
+                    <a href="/">Anasayfa</a>
+                    <a href="../../hizmetlerimiz/">Hizmetlerimiz</a>
+                    <a href="../../hakkimizda/">Hakkımızda</a>
+		    <a href="../../dokumanlar/">Dökümanlar</a>
+                    <a href="../../iletisim/">İletişim</a>
+   </div>
+
+                </nav>
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Hizmetlerimiz</h2>
+                            </div>
+            <div class="services-grid">
+                <a href="../../basincli_kaplar_ve_silindirik_kazanlar/" class="service-card">
+                    <div class="service-image">
+                        <i class="fa-solid fa-gauge"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Basınçlı Kaplar ve Silindirik Kazanlar Periyodik Kontrolü</h3>
+                        
+                        <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../kaldirma_ve_iletme_makineleri/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-weight-hanging"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Kaldırma ve İletme Makineleri  Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+               
+                <a href="../../havalandirma_ve_iklimlendirme_tesisati/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-fan"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Havalandırma ve İklimlendirme Tesisatı Periyodik Kontrolü</h3>
+                        
+                        <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../mekanik_yangin_tesisati/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Mekanik Yangın Tesisatı Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../otomatik_sondurme_sistemleri/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-spray-can"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Otomatik Söndürme Sistemleri Periyodik Kontrolü</h3>
+                                                <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../portatif_yangin_sondurme_cihazlari/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-fire-extinguisher"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Portatif Yangın Söndürme Cihazları Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                   
+                    </div>
+ </a>
+                <a href="../../kacis_yolu_basinclandirma/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-person-running"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Kaçış Yolu Basınçlandırma Sistemleri Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                   
+                    </div>
+
+ </a>
+                <a href="../../duman_tahliye_sistemleri/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Duman Tahliye Sistemleri Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                   
+                    </div>
+
+
+                </a>
+                <a href="../../tezgahlar/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-gears"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Tezgahların Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+  <a href="../../endustriyel_raf_sistemleri/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Endüstriyel Raf Sistemleri Periyodik Kontrolü</h3>
+                        
+                        <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../endustriyel_kapilar/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Endüstriyel Kapı Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    
+                    </div></a>
+                <a href="../../is_makineleri/" class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-snowplow"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>İş Makineleri Periyodik Kontrolü</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="../../statik_analiz/" class="service-card">>
+                    <div class="service-image">
+                        <i class="fas fa-compass-drafting"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Statik Analiz</h3>
+                                               <span class="service-link">Detaylı Bilgi <i class="fas fa-arrow-right"></i></span>
+                    </div> </a>
+               </section>
+
+     <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kaldentek Muayene ve Kontrol Hizmetleri</h3>
+                   
+
+                </div>
+                               
+                <div class="footer-section">
+                    <h3>İletişim</h3>
+                      <p style="color:#cbd5e1;"><i class="fas fa-phone"></i> 0532 546 27 18</p>
+                    <p style="color:#cbd5e1; margin:10px 0;"><i class="fas fa-envelope"></i> info@kaldentek.com</p>
+                    <p style="color:#cbd5e1;"><i class="fas fa-map-marker-alt"></i> Çınarlı Mah. Ozan Abay Cad. No:8 Z17 Konak İzmir</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                  <p>&copy; 2026 Kaldentek Muayene ve Kontrol Hizmetleri | Tüm Hakları Saklıdır</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const menuToggle = document.getElementById('menuToggle');
+            const body = document.body;
+            
+            // Overlay oluştur
+            const menuOverlay = document.createElement('div');
+            menuOverlay.className = 'menu-overlay';
+            document.body.appendChild(menuOverlay);
+
+            // Menü Aç/Kapat Fonksiyonu
+            function toggleMenu() {
+                navbar.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                body.classList.toggle('menu-open');
+                
+                // İkon değiştirme
+                const icon = menuToggle.querySelector('i');
+                if (navbar.classList.contains('active')) {
+                    icon.classList.replace('fa-bars', 'fa-times');
+                } else {
+                    icon.classList.replace('fa-times', 'fa-bars');
+                }
+            }
+
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            menuOverlay.addEventListener('click', toggleMenu);
+
+            // Linke tıklanınca menüyü kapat
+            const navLinks = navbar.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navbar.classList.contains('active')) toggleMenu();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
